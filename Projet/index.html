@@ -7,10 +7,14 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- Recupération des données -->
+<script src="http://www.iut-fbleau.fr/projet/maths/?f=votes.js"></script>
+<script src="http://www.iut-fbleau.fr/projet/maths/?f=logins.js"></script>
 <style>
 .w3-sidebar a {font-family: "Roboto", sans-serif}
 body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 </style>
+
 <body class="w3-content" style="max-width:1400px">
 
 <!-- Sidebar/menu -->
@@ -23,25 +27,25 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
     <a onclick="myAccFunc()" href="javascript:void(0)" class="w3-button w3-block w3-white w3-left-align" id="myBtn">Matières<i class="fa fa-caret-down"></i>
     </a>
     <div id="demoAcc" class="w3-bar-block w3-hide w3-padding-large w3-medium">
-      <input class="w3-check w3-bar-item" type="checkbox">
+      <input onclick="clickFunc()" class="w3-check w3-bar-item" id="ACDA" type="checkbox">
       <label>ACDA</label>
-      <input class="w3-check w3-bar-item" type="checkbox">
+      <input onclick="clickFunc()" class="w3-check w3-bar-item" id="ANGL" type="checkbox">
       <label>ANGL</label>
-      <input class="w3-check w3-bar-item" type="checkbox">
+      <input onclick="clickFunc()" class="w3-check w3-bar-item" id="APL" type="checkbox">
       <label>APL</label>
-      <input class="w3-check w3-bar-item" type="checkbox">
+      <input onclick="clickFunc()" class="w3-check w3-bar-item" id="ART" type="checkbox">
       <label>ART</label>
-      <input class="w3-check w3-bar-item" type="checkbox">
+      <input onclick="clickFunc()" class="w3-check w3-bar-item" id="ASR" type="checkbox">
       <label>ASR</label>
-      <input class="w3-check w3-bar-item" type="checkbox">
+      <input onclick="clickFunc()" class="w3-check w3-bar-item" id="EC" type="checkbox">
       <label>EC</label>
-      <input class="w3-check w3-bar-item" type="checkbox">
+      <input onclick="clickFunc()" class="w3-check w3-bar-item" id="EGOD" type="checkbox">
       <label>EGOD</label>
-      <input class="w3-check w3-bar-item" type="checkbox">
+      <input onclick="clickFunc()" class="w3-check w3-bar-item" id="MAT" type="checkbox">
       <label>MAT</label>
-      <input class="w3-check w3-bar-item" type="checkbox">
+      <input onclick="clickFunc()" class="w3-check w3-bar-item" id="SGBD" type="checkbox">
       <label>SGBD</label>
-      <input class="w3-check w3-bar-item" type="checkbox">
+      <input onclick="clickFunc()" class="w3-check w3-bar-item" id="SPORT" type="checkbox">
       <label>SPORT</label>
     </div>
   </div>
@@ -67,6 +71,8 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
     <p class="w3-left">Classement</p>
   </header>
 
+    <p id="test"></p>
+
   <!-- Footer -->
   <footer class="w3-light-grey w3-small w3-center" id="footer" style="position:fixed;bottom:0;">
   </footer>
@@ -76,7 +82,36 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
   <!-- End page content -->
 </div>
 
+
+
 <script>
+
+//Tableau de toutes les matières disponibles
+let matieres = ['ACDA', 'ANGL', 'APL', 'ART', 'ASR', 'EC', 'EGOD', 'MAT', 'SGBD', 'SPORT']; 
+
+//Tableau des matières sélectionnées
+let mat_check = [];
+
+//Permet de mettre à jour le tableau des matières sélectionnées
+//Et les affiche
+function clickFunc() { 
+  let text = "";
+  for (i=0; matieres.length; i++){
+    var mati = document.getElementById(matieres[i]);
+    if (mati.checked == true){
+      if (mat_check.includes(mati) == false){
+        mat_check.push(matieres[i]);
+      }
+      text += "<li>" + matieres[i] + "</li>";
+    } else {
+      if (mat_check.includes(mati) == true){
+        mat_check.splice(matieres.lastIndexOf(mati),1);
+      }
+    }
+    document.getElementById("test").innerHTML = text;
+  }
+}
+
 // Accordion 
 function myAccFunc() {
   var x = document.getElementById("demoAcc");
@@ -91,12 +126,13 @@ function myAccFunc() {
 document.getElementById("myBtn").click();
 
 
-// Open and close sidebar
+// Open sidebar
 function w3_open() {
   document.getElementById("mySidebar").style.display = "block";
   document.getElementById("myOverlay").style.display = "block";
 }
  
+//Close sidebar
 function w3_close() {
   document.getElementById("mySidebar").style.display = "none";
   document.getElementById("myOverlay").style.display = "none";
