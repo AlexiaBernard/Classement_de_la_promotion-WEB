@@ -81,63 +81,9 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 
   <!-- End page content -->
 </div>
-
-
-
-<script>
-
-//Tableau de toutes les matières disponibles
-let matieres = ['ACDA', 'ANGL', 'APL', 'ART', 'ASR', 'EC', 'EGOD', 'MAT', 'SGBD', 'SPORT']; 
-
-//Tableau des matières sélectionnées
-let mat_check = [];
-
-//Permet de mettre à jour le tableau des matières sélectionnées
-//Et les affiche
-function clickFunc() { 
-  let text = "";
-  for (i=0; matieres.length; i++){
-    var mati = document.getElementById(matieres[i]);
-    if (mati.checked == true){
-      if (mat_check.includes(mati) == false){
-        mat_check.push(matieres[i]);
-      }
-      text += "<li>" + matieres[i] + "</li>";
-    } else {
-      if (mat_check.includes(mati) == true){
-        mat_check.splice(matieres.lastIndexOf(mati),1);
-      }
-    }
-    document.getElementById("test").innerHTML = text;
-  }
-}
-
-// Accordion 
-function myAccFunc() {
-  var x = document.getElementById("demoAcc");
-  if (x.className.indexOf("w3-show") == -1) {
-    x.className += " w3-show";
-  } else {
-    x.className = x.className.replace(" w3-show", "");
-  }
-}
-
-// Click on the "Jeans" link on page load to open the accordion for demo purposes
-document.getElementById("myBtn").click();
-
-
-// Open sidebar
-function w3_open() {
-  document.getElementById("mySidebar").style.display = "block";
-  document.getElementById("myOverlay").style.display = "block";
-}
- 
-//Close sidebar
-function w3_close() {
-  document.getElementById("mySidebar").style.display = "none";
-  document.getElementById("myOverlay").style.display = "none";
-}
-</script>
+<script src="http://www.iut-fbleau.fr/projet/maths/?f=votes.js"></script>
+<script src="http://www.iut-fbleau.fr/projet/maths/?f=logins.js"></script>
+<script src="script.js" defer></script>
 
 </body>
 </html>
