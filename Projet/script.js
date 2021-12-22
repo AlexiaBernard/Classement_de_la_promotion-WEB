@@ -23,7 +23,31 @@ function dynamicallyLoadScript(url) {
 jsp trop
 */
 
+loadScript("http://www.iut-fbleau.fr/projet/maths/?f=logins.js");
+loadScript("http://www.iut-fbleau.fr/projet/maths/?f=votes.js");
 
+//fonction qui include les tableaux logins et votes
+function loadScript (url){
+  var head = document.getElementsByTagName('head')[0];
+  var script = document.createElement('script');
+  script.type = 'texte/javascript';
+  script.src = url;
+  head.appendChild(script);
+}
+
+//Tableau de tous les logins 
+let log = [];
+
+keysFunc(logins, log);
+
+//Fonction qui permet de récupérer tous les logins puis de les trier par ordre alphabétique
+function keysFunc(src, dest){
+  const keys = Object.keys(src);
+  for (let x of keys) {
+    dest.push(x);
+  }
+  dest.sort();
+}
 
 //Tableau de toutes les matières disponibles
 let matieres = ['ACDA', 'ANGL', 'APL', 'ART', 'ASR', 'EC', 'EGOD', 'MAT', 'SGBD', 'SPORT']; 
@@ -48,6 +72,7 @@ function clickFunc() {
       }
     }
     document.getElementById("test").innerHTML = text;
+    document.getElementById("test2").innerHTML = logins[log[0]];
   }
 }
 
