@@ -37,6 +37,7 @@ function loadScript (url){
 
 //Tableau de tous les logins 
 let log = [];
+let taille = 0;
 
 keysFunc(logins, log);
 
@@ -47,6 +48,36 @@ function keysFunc(src, dest){
     dest.push(x);
   }
   dest.sort();
+  taille = log.length;
+}
+
+let matrice_poids = [];
+
+init_mat_poids();
+
+function init_mat_poids(){
+  for (let i=0; i<taille ;i++){
+    matrice_poids[i] = 1;
+  }
+}
+
+var matrice_vote = new Array();
+
+matr_voteFunc("ACDA");
+
+//pas sure que ca fonctionne
+function matr_voteFunc(matiere){
+  for(let i=0; i<taille; i++){
+    var x = log[i];
+    matrice_vote[x] = new Array();
+    for(let j=0; j<taille; j++){
+      if (votes[x[matiere]].includes[log[j]] == true){
+        matrice_vote[x] = 1 ;
+      } else {
+        matrice_vote[x] = 0 ;
+      }
+    }
+  }
 }
 
 //Tableau de toutes les matières disponibles
