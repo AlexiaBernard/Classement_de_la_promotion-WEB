@@ -1,57 +1,36 @@
-/*fetchInject([
-  'http://www.iut-fbleau.fr/projet/maths/?f=votes.js'
-]).then(() => {
-  console.log(`Finish in less than ${moment().endOf('year').fromNow(true)}`)
-})
-
-
-fetchInject([
-  'http://www.iut-fbleau.fr/projet/maths/?f=logins.js'
-]).then(() => {
-  console.log(`Finish in less than ${moment().endOf('year').fromNow(true)}`)
-})
-
-ou
-
-function dynamicallyLoadScript(url) {
-    var script = document.createElement("script");  // create a script DOM node
-    script.src = url;  // set its src to the provided URL
-
-    document.head.appendChild(script);  // add it to the end of the head section of the page (could change 'head' to 'body' to add it to the end of the body section instead)
-}
-
-jsp trop
-*/
-
-loadScript("http://www.iut-fbleau.fr/projet/maths/?f=logins.js");
-loadScript("http://www.iut-fbleau.fr/projet/maths/?f=votes.js");
-
-//fonction qui include les tableaux logins et votes
-function loadScript (url){
-  var head = document.getElementsByTagName('head')[0];
-  var script = document.createElement('script');
-  script.type = 'texte/javascript';
-  script.src = url;
-  head.appendChild(script);
-}
-
-//Tableau de tous les logins 
-let log = [];
-let taille = 0;
-
-keysFunc(logins, log);
-
 //Fonction qui permet de récupérer tous les logins puis de les trier par ordre alphabétique
-function keysFunc(src, dest){
+function getlog(src){
+  let dest=[];
   const keys = Object.keys(src);
   for (let x of keys) {
     dest.push(x);
   }
   dest.sort();
-  taille = log.length;
+  return dest;
+}
+let log=[];
+log=getlog(logins);
+
+
+//affiche les logins
+/*let text="";
+for(let i in log){
+  text += "<li>" + log[i] + "</li>";
+  document.getElementById("test").innerHTML = text;
+  console.log(log[i]);
+}*/
+
+//affiche les votes (clé de l'objet et jsp ce que c'est le numéro) (c'est des objets d'objets de tableau mdr) 
+let text="";
+for(let i in votes){
+  for(let j in i){
+    text += "<li>" + i + " " +j +"</li>";
+    document.getElementById("test").innerHTML = text;
+    console.log(votes[i]);
+  }
 }
 
-let matrice_poids = [];
+/*let matrice_poids = [];
 
 init_mat_poids();
 
@@ -63,7 +42,7 @@ function init_mat_poids(){
 
 var matrice_vote = new Array();
 
-matr_voteFunc("ACDA");
+/*matr_voteFunc("ACDA");
 
 //pas sure que ca fonctionne
 function matr_voteFunc(matiere){
@@ -78,17 +57,17 @@ function matr_voteFunc(matiere){
       }
     }
   }
-}
+}*/
+//------------------------------------Selection matières------------------------------------//
 
-//Tableau de toutes les matières disponibles
-let matieres = ['ACDA', 'ANGL', 'APL', 'ART', 'ASR', 'EC', 'EGOD', 'MAT', 'SGBD', 'SPORT']; 
-
-//Tableau des matières sélectionnées
-let mat_check = [];
-
-//Permet de mettre à jour le tableau des matières sélectionnées
-//Et les affiche
+//Permet de mettre à jour le tableau des matières sélectionnées et les affiche
 function clickFunc() { 
+  //Tableau de toutes les matières disponibles
+  let matieres = ['ACDA', 'ANGL', 'APL', 'ART', 'ASR', 'EC', 'EGOD', 'MAT', 'SGBD', 'SPORT'];
+  
+  //Tableau des matières sélectionnées
+  let mat_check = [];
+
   let text = "";
   for (i=0; matieres.length; i++){
     var mati = document.getElementById(matieres[i]);
@@ -103,9 +82,11 @@ function clickFunc() {
       }
     }
     document.getElementById("test").innerHTML = text;
-    document.getElementById("test2").innerHTML = logins[log[0]];
+    //document.getElementById("test2").innerHTML = logins[log[0]];
   }
 }
+
+//------------------------------------Fonctions visuels------------------------------------//
 
 // Accordion 
 function myAccFunc() {
