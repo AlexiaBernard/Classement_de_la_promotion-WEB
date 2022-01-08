@@ -97,42 +97,38 @@ function clickFunc() {
   }
 
   //-----------------------Récupération des etudiants-------------------------//
-  //ATTENTION ! ICI JE N'AI PAS PRIS EN COMPTE LA MATIERE...
-  //Jpense faudrait refaire ça mais en prenant en compte la matière 
-  text2 = "";
-  let taille = 0; //La taille de la matrice 
-  let indice = 0; //Sert à Initialiser le tableau votants
-  for(let i in votes){
-    etudiants[taille] = i;
-    votants[indice] = i;
-    taille ++;
-    indice ++;
-    for(let j in votes[i]){
-      for(let l in votes[i][j])
-      if (etudiants.findIndex(k => k===votes[i][j][l]) == -1 && votes[i][j][l]!==""){
-        etudiants[taille] = votes[i][j][l];
-        taille++;
-      }
-    }
-  }
-  //définition de la taille de la matrice
-  taille = etudiants.length;
-
-  //Affichage de tous les participants
-  for (let i = 0; i<taille; i++){
-    text2 +=  "<li>" + etudiants[i] + "</li>";
-  }
-  //document.getElementById("test2").innerHTML = text2; //Ca fonctionne
-
-  matrice_vote.length = taille;
-  var ligne;
-  var nb_vote = 0;
-  var matiere;
-  var delta = 0.15;
-  text2 = ""; //A mettre en commentaire pour essayer la partie du dessus
-  //----------------------------Récupération des votes------------------------------//
   for (let j = 0; j<mat_check.length; j++){ 
     matiere = mat_check[j]; //Attention pour le moment il faut selectionner qu'une seule matiere
+    text2 = "";
+    let taille = 0; //La taille de la matrice 
+    let indice = 0; //Sert à Initialiser le tableau votants
+    for(let i in votes){
+      etudiants[taille] = i;
+      votants[indice] = i;
+      taille ++;
+      indice ++;
+        for(let l in votes[i][matiere])
+        if (etudiants.findIndex(k => k===votes[i][matiere][l]) == -1 && votes[i][matiere][l]!==""){
+          etudiants[taille] = votes[i][matiere][l];
+          taille++;
+        }
+    }
+    //définition de la taille de la matrice
+    taille = etudiants.length;
+
+    //Affichage de tous les participants
+    for (let i = 0; i<taille; i++){
+      text2 +=  "<li>" + etudiants[i] + "</li>";
+    }
+    //document.getElementById("test2").innerHTML = text2; //Ca fonctionne
+
+    matrice_vote.length = taille;
+    var ligne;
+    var nb_vote = 0;
+    var matiere;
+    var delta = 0.15;
+    text2 = ""; //A mettre en commentaire pour essayer la partie du dessus
+  //----------------------------Récupération des votes------------------------------//
     for(let t1 in log){ //Parcourt les logins
       //z et text2 = login de l'etudiant votant
       var z = log[t1];
@@ -142,18 +138,18 @@ function clickFunc() {
         //Si la personne est présente dans la matrice 
         //(afin d'éviter d'avoir une matrice trop grande avec pleins de zéro inutiles)
         ligne = z; //Ici on dit que la ligne c'est le log du votant
-        if (votants.findIndex(k => k===z) > -1){
+        if (votants.findIndex(k => k===ligne) > -1){
           document.getElementById("test2").innerHTML = "OK";
-          //ICI ca ne fonctionne plus, aucun des deux ne fonctionne :/
+          //ICI ca ne fonctionne plus
           //Vérifie si c'est un votant ou un voté
           for (let colonne=0; colonne<taille; colonne++){
             nb_vote = votes[z][matiere].length; //Permet d'avoir le nombre de vote dans une matière
             if (true){
               //Ici maintenant il faut regarder dans le if le login voté si c'est celui de la matrice
-              // afin de faire 1/nb_vote comme valeur dans la matrice 
+              matrice_poids[ligne][colonne] = 1; //ic il faut mettre le calcul du prof 
             } else {
-              //Ici c'est si c'est pas la bonne personne ça met 0
-              matrice_poids[ligne][colonne] = 0;
+              //Ici c'est si c'est pas la bonne personne (pas voté) ça met : delta/taille 
+              matrice_poids[ligne][colonne] = delta/taille;
             }
           }
         } else { //Ici ce sont les étudiants ne votants pour personne
@@ -161,7 +157,7 @@ function clickFunc() {
             if (colonne==ligne){
               matrice_poids[ligne][colonne] = 0
             } else {
-              matrice_poids[ligne][colonne] = 0; //ici il faut mettre le calcule du prof avec delta
+              matrice_poids[ligne][colonne] = 0; //ici il faut mettre le calcule du prof
             }
           }
         }
