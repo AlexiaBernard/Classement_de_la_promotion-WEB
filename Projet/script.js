@@ -97,33 +97,42 @@ function clickFunc() {
   }
 
   //-----------------------Récupération des etudiants-------------------------//
+  //ATTENTION ! ICI JE N'AI PAS PRIS EN COMPTE LA MATIERE...
+  //Jpense faudrait refaire ça mais en prenant en compte la matière 
   text2 = "";
+  let taille = 0; //La taille de la matrice 
+  let indice = 0; //Sert à Initialiser le tableau votants
   for(let i in votes){
-    etudiants.push(i);
-    votants.push(i);
+    etudiants[taille] = i;
+    votants[indice] = i;
+    taille ++;
+    indice ++;
     for(let j in votes[i]){
       for(let l in votes[i][j])
       if (etudiants.findIndex(k => k===votes[i][j][l]) == -1 && votes[i][j][l]!==""){
-        etudiants.push(votes[i][j][l]);
+        etudiants[taille] = votes[i][j][l];
+        taille++;
       }
     }
   }
-  //Affichage de la lsite des "participants" + définition de la taille de la matrice
-  let taille = 0;
-  for (let i in etudiants){
-    taille++;
-    //text2 += "<li>" + etudiants[i] + "</li>";
-    //document.getElementById("test2").innerHTML = text2;
+  //définition de la taille de la matrice
+  taille = etudiants.length;
+
+  //Affichage de tous les participants
+  for (let i = 0; i<taille; i++){
+    text2 +=  "<li>" + etudiants[i] + "</li>";
   }
+  //document.getElementById("test2").innerHTML = text2; //Ca fonctionne
 
   matrice_vote.length = taille;
   var ligne;
   var nb_vote = 0;
   var matiere;
+  var delta = 0.15;
+  text2 = ""; //A mettre en commentaire pour essayer la partie du dessus
   //----------------------------Récupération des votes------------------------------//
   for (let j = 0; j<mat_check.length; j++){ 
-    matiere = mat_check[j]; 
-    //matiere = "ACDA"; //Pour le moment peut etre faire qu'avec une seule matière ca serait pas mal
+    matiere = mat_check[j]; //Attention pour le moment il faut selectionner qu'une seule matiere
     for(let t1 in log){ //Parcourt les logins
       //z et text2 = login de l'etudiant votant
       var z = log[t1];
@@ -132,9 +141,8 @@ function clickFunc() {
       if (etudiants.findIndex(k => k===z) > -1 ){ 
         //Si la personne est présente dans la matrice 
         //(afin d'éviter d'avoir une matrice trop grande avec pleins de zéro inutiles)
-        ligne = z;
-         
-        if (votants.findIndex(k => k===z) > -1){ // votants.includes(z,0) == true
+        ligne = z; //Ici on dit que la ligne c'est le log du votant
+        if (votants.findIndex(k => k===z) > -1){
           document.getElementById("test2").innerHTML = "OK";
           //ICI ca ne fonctionne plus, aucun des deux ne fonctionne :/
           //Vérifie si c'est un votant ou un voté
@@ -148,9 +156,13 @@ function clickFunc() {
               matrice_poids[ligne][colonne] = 0;
             }
           }
-        } else { //Ici c'est les votés pas votants
+        } else { //Ici ce sont les étudiants ne votants pour personne
           for (let colonne=0; colonne<taille; colonne++){
-            matrice_poids[ligne][colonne] = 0;
+            if (colonne==ligne){
+              matrice_poids[ligne][colonne] = 0
+            } else {
+              matrice_poids[ligne][colonne] = 0; //ici il faut mettre le calcule du prof avec delta
+            }
           }
         }
       }
