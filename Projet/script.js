@@ -11,35 +11,14 @@ function getlog(src){
 let log=[];
 log=getlog(logins);
 
-
-//affiche les logins
-/*let text="";
-for(let i in log){
-  text += "<li>" + log[i] + "</li>";
-  document.getElementById("test").innerHTML = text;
-  console.log(log[i]);
-}*/
-
 //------------------------------------Fonctions votes--------------------------------------//
-/*
-//affiche les votes
-let text="";
-for(let i in votes){
-  for (let j in votes[i][matiere])
-  text += "<li>" + i + " " + votes[i][matiere][j] +"</li>";
-  document.getElementById("test").innerHTML = text;
-  console.log(votes[i]);
-}*/
-
-/*
-//affiche les votes
+/*//affiche les votes + login
 text="";
-  //console.log(votes["andriama"]["ACDA"]);
+//console.log(votes["andriama"]["ACDA"]);
 for(let i in votes){
   for (let j in votes[i]){
-    console.log(votes[i][j]);
-    text += "<li>" + i + " " + votes[i][j] +"</li>";
-    document.getElementById("test").innerHTML = text;
+      text += "<li>" + i + " à voté pour " + votes[i][j] + " dans la matière "+ j + "</li>";
+      document.getElementById("test").innerHTML = text;
   }
 }*/
 
@@ -86,18 +65,8 @@ function clickFunc() {
     //document.getElementById("test2").innerHTML = logins[log[0]]; //affiche le nom entier
   }
 
-  //affiche les votes
-  text="";
-  //console.log(votes["andriama"]["ACDA"]);
-  for(let i in votes){
-    for (let j in votes[i]){
-        text += "<li>" + i + " à voté pour " + votes[i][j] + " dans la matière "+ j + "</li>";
-        //document.getElementById("test").innerHTML = text;
-    }
-  }
-
   //-----------------------Récupération des etudiants-------------------------//
-  for (let j = 0; j<mat_check.length; j++){ 
+  /*for (let j = 0; j<mat_check.length; j++){ 
     matiere = mat_check[j]; //Attention pour le moment il faut selectionner qu'une seule matiere
     text2 = "";
     let taille = 0; //La taille de la matrice 
@@ -107,11 +76,15 @@ function clickFunc() {
       votants[indice] = i;
       taille ++;
       indice ++;
-        for(let l in votes[i][matiere])
-        if (etudiants.findIndex(k => k===votes[i][matiere][l]) == -1 && votes[i][matiere][l]!==""){
-          etudiants[taille] = votes[i][matiere][l];
-          taille++;
-        }
+        for(let l in votes[i][matiere]){
+          if (etudiants.findIndex(k => k===votes[i][matiere][l]) == -1 && votes[i][matiere][l]!==""){
+            etudiants[taille] = votes[i][matiere][l];
+            taille++;
+          }
+        } 
+    }
+    for(let k=0;k<taille;k++){
+      console.log(etudiants[k]);
     }
     //définition de la taille de la matrice
     taille = etudiants.length;
@@ -129,7 +102,7 @@ function clickFunc() {
     var matiere;
     var delta = 0.15;
     var votant = false;
-    text2 = ""; //A mettre en commentaire pour essayer la partie du dessus
+    /*text2 = ""; //A mettre en commentaire pour essayer la partie du dessus
   //----------------------------Récupération des votes------------------------------//
     for(let ligne in etudiants){ //Parcourt les logins
       //ligne est le numéro de l'etudiant et etudiant[ligne] son log
@@ -179,7 +152,93 @@ function clickFunc() {
       text2 += "</li>";
     }
     document.getElementById("test2").innerHTML = text2;
-  }  
+  }*/ 
+
+//----------------------------Récupération des noms puis nombre de vote par personne------------------------------//
+matiere = mat_check[0];
+
+text2 = "";
+let taille = 0; //La taille de la matrice
+let nbvotes; //nombre de vote par personnes
+let etudiant = [[],[]]; //tableau avec nom + nombre de vote 
+let cpt;
+
+//etudiant[0][taille]=nom
+//etudiant[1][taille]=nb de votes
+
+for(let i in log){
+  //console.log(log[i]+" "+votes[0]);
+  cpt=0;
+  for(let j in votes){
+    if(j==log[i]){
+      nbvotes=0;
+      etudiant[0][taille] = j;
+      for(let l in votes[j][matiere]){
+        nbvotes++;
+        //console.log(i+" a voté pour "+votes[i][matiere][l]+ " en "+matiere);
+      }
+      etudiant[1][taille]=nbvotes;
+      //console.log(i+" a voté pour "+etudiant[1][taille]);
+      taille++;
+      cpt=0;
+      break;
+    }else{
+      cpt=1;
+    }
+  }
+  if(cpt==1){
+    etudiant[0][taille] = log[i];
+    etudiant[1][taille] = 0;
+    taille++;
+  }
+}
+
+//affichage du tableau des étudiants avec nombre de vote
+/*for(let i=0;i<etudiant[0].length;i++){
+  console.log(etudiant[0][i]+" "+etudiant[1][i]);
+}*/
+
+//----------------------------Création de la matrice------------------------------//
+
+let matrice = new Array(etudiant[0].length);
+for(let i=0;i<etudiant[0].length;i++){
+  matrice[i]=new Array(etudiant[0].length);
+}
+
+for(let i=0;i<etudiant[0].length;i++){
+  if(etudiant[1][i]==0){
+  //console.log(etudiant[0][i]);
+    for(let p=0;p<matrice.length;p++){
+      matrice[i][p]=0;
+    }
+  }else{
+    for(let k=0;k<etudiant[0].length;k++){
+      for(let j in votes){
+        for(let l in votes[j][matiere]){
+          if(votes[j][matiere][l]==etudiant[0][k]){
+            matrice[i][k]=1/etudiant[1][i];           //problème ca mets trop de fois la valeur dans la matrice
+                                                      //sinon la valeur est la bonne pour chaque étudiants
+                                                      //pour l'instant j'ai mis tout le monde dans la matrice mais faudra virer
+                                                      //  ceux qui n'ont pas voté
+          }
+        }
+      }
+    }
+  }
+}
+
+//afiche juste la matrice avec le nom en plus devant
+for(let i=0;i<matrice.length;i++){
+  text2 += "<li>";
+  text2 +=etudiant[0][i]+" ";
+  for(let p=0;p<matrice.length;p++){
+    //console.log(matrice[i][p]);
+    text2 +=matrice[i][p]+" ";
+  }
+  text2 += "</li>";
+}
+document.getElementById("test2").innerHTML = text2;
+ 
 }
 
 //------------------------------------Fonctions visuels------------------------------------//
