@@ -129,42 +129,42 @@ function clickFunc() {
     var delta = 0.15;
     text2 = ""; //A mettre en commentaire pour essayer la partie du dessus
   //----------------------------Récupération des votes------------------------------//
-    for(let t1 in log){ //Parcourt les logins
-      //z et text2 = login de l'etudiant votant
-      var z = log[t1];
-      text2 += "<li>" + z + "</li>";
+    for(let ligne in etudiants){ //Parcourt les logins
+      //ligne est le numéro de l'etudiant et etudiant[ligne] son log
       //console.log(votes);
-      if (etudiants.findIndex(k => k===z) > -1 ){ 
-        //Si la personne est présente dans la matrice 
-        //(afin d'éviter d'avoir une matrice trop grande avec pleins de zéro inutiles)
-        ligne = z; //Ici on dit que la ligne c'est le log du votant
-        if (votants.findIndex(k => k===ligne) > -1){
-          document.getElementById("test2").innerHTML = "OK";
-          //ICI ca ne fonctionne plus
-          //Vérifie si c'est un votant ou un voté
-          for (let colonne=0; colonne<taille; colonne++){
-            nb_vote = votes[z][matiere].length; //Permet d'avoir le nombre de vote dans une matière
-            if (true){
-              //Ici maintenant il faut regarder dans le if le login voté si c'est celui de la matrice
-              matrice_poids[ligne][colonne] = 1; //ic il faut mettre le calcul du prof 
-            } else {
-              //Ici c'est si c'est pas la bonne personne (pas voté) ça met : delta/taille 
-              matrice_poids[ligne][colonne] = delta/taille;
-            }
+      text2 += "<li>" + ligne;
+      //Si la personne est présente dans la matrice 
+      //(afin d'éviter d'avoir une matrice trop grande avec pleins de zéro inutiles)
+      if (votants.findIndex(k => k===ligne) > -1){
+        //ICI ca ne fonctionne plus
+        //Vérifie si c'est un votant ou un voté
+        for (let colonne in etudiants){
+          nb_vote = votes[ligne][matiere].length; //Permet d'avoir le nombre de vote dans une matière
+          if (true){
+            //Ici maintenant il faut regarder dans le if le login voté si c'est celui de la matrice
+            matrice_vote[ligne][colonne] = 1; //ici il faut mettre le calcul du prof 
+          } else {
+            //Ici c'est si c'est pas la bonne personne (pas voté) ça met : delta/taille 
+            matrice_vote[ligne][colonne] = delta/taille;
           }
-        } else { //Ici ce sont les étudiants ne votants pour personne
-          for (let colonne=0; colonne<taille; colonne++){
-            if (colonne==ligne){
-              matrice_poids[ligne][colonne] = 0
-            } else {
-              matrice_poids[ligne][colonne] = 0; //ici il faut mettre le calcule du prof
-            }
+          text2 += matrice_vote[ligne][colonne];
+        }
+      } else { //Ici ce sont les étudiants ne votants pour personne
+        for (let colonne in etudiants){
+          if (colonne==ligne){
+            //document.getElementById("test2").innerHTML = etudiants[ligne];
+            matrice_vote[ligne][colonne] = 0;
+            document.getElementById("test2").innerHTML = "OK2";
+          } else {
+            matrice_vote[ligne][colonne] = 0; //ici il faut mettre le calcul du prof
           }
+          text2 += matrice_vote[ligne][colonne];
         }
       }
+      text2 += "</li>";
     }
-  } 
-  document.getElementById("test2").innerHTML = text2;
+    document.getElementById("test2").innerHTML = text2;
+  }  
 }
 
 /*
