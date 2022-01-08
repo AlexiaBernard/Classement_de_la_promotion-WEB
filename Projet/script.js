@@ -12,17 +12,6 @@ let log=[];
 log=getlog(logins);
 
 //------------------------------------Fonctions votes--------------------------------------//
-/*//affiche les votes + login
-text="";
-//console.log(votes["andriama"]["ACDA"]);
-for(let i in votes){
-  for (let j in votes[i]){
-      text += "<li>" + i + " à voté pour " + votes[i][j] + " dans la matière "+ j + "</li>";
-      document.getElementById("test").innerHTML = text;
-  }
-}*/
-
-
 let matrice_poids = [];
 
 //init_mat_poids();
@@ -66,78 +55,68 @@ function clickFunc() {
   }
 
   //-----------------------Récupération des etudiants-------------------------//
-  /*for (let j = 0; j<mat_check.length; j++){ 
+  for (let j = 0; j<mat_check.length; j++){ 
     matiere = mat_check[j]; //Attention pour le moment il faut selectionner qu'une seule matiere
     text2 = "";
     let taille = 0; //La taille de la matrice 
     let indice = 0; //Sert à Initialiser le tableau votants
     for(let i in votes){
-      etudiants[taille] = i;
+      //Permet de savoir si l'étudiant est déjà dans le tableau ou non (eviter les doubles)
+      if (etudiants.includes(i)==false){
+        etudiants[taille] = i;
+        taille ++;
+      }
       votants[indice] = i;
-      taille ++;
       indice ++;
         for(let l in votes[i][matiere]){
-          if (etudiants.findIndex(k => k===votes[i][matiere][l]) == -1 && votes[i][matiere][l]!==""){
+          //Permet de savoir si l'étudiant est déjà dans le tableau ou non (eviter les doubles)
+          if (etudiants.includes(votes[i][matiere][l])==false && votes[i][matiere][l]!==""){
             etudiants[taille] = votes[i][matiere][l];
-            taille++;
+            taille++              
           }
         } 
     }
-    for(let k=0;k<taille;k++){
-      console.log(etudiants[k]);
-    }
+
     //définition de la taille de la matrice
     taille = etudiants.length;
-    let taille2 = votants.length;
 
     //Affichage de tous les participants
     for (let i = 0; i<taille; i++){
       text2 +=  "<li>" + etudiants[i] + "</li>";
     }
-    //document.getElementById("test2").innerHTML = text2; //Ca fonctionne
+    //document.getElementById("test2").innerHTML = taille; //Ca fonctionne
 
-    //matrice_vote.length = taille;
-    var ligne;
     var nb_vote = 0;
     var matiere;
     var delta = 0.15;
-    var votant = false;
-    /*text2 = ""; //A mettre en commentaire pour essayer la partie du dessus
+    text2 = "";
   //----------------------------Récupération des votes------------------------------//
-    for(let ligne in etudiants){ //Parcourt les logins
+    for(let ligne in etudiants){ //Parcourt les étudiants
       //ligne est le numéro de l'etudiant et etudiant[ligne] son log
-      //console.log(votes);
-      votant = false;
       text2 += "<li>" + etudiants[ligne];
-      //Si la personne est présente dans la matrice 
-      //(afin d'éviter d'avoir une matrice trop grande avec pleins de zéro inutiles)
+      //Permet de créer une ligne vide
       matrice_vote.push([]);
+      //Remplis la ligne vide créée juste au dessus
       matrice_vote[ligne].push(new Array(taille));
-      var test = etudiants[ligne];
-      //La boucle ci dessous permet de savoir si la personne vote ou est voté 
-      for (let i = 0; i<taille2; i++){
-        if (votants[i] == etudiants[ligne]){
-          votant = true;
-          break;
-        }
-      }
-      if (votant){
+      if (votants.includes(etudiants[ligne])){
         //Vérifie si c'est un votant ou un voté
-        nb_vote = 0;
         for (let colonne in etudiants){
+          nb_vote = 0;
           for (let j in votes[etudiants[ligne]][matiere]){
             nb_vote++;//Permet d'avoir le nombre de vote dans une matière
           }
+          matrice_vote[ligne][colonne] ="vide";
           for (let v in votes[etudiants[ligne]][matiere]){
             if (votes[etudiants[ligne]][matiere][v]==etudiants[colonne]){
               //Ici maintenant il faut regarder dans le if le login voté si c'est celui de la matrice
               matrice_vote[ligne][colonne] = "V"; //ici il faut mettre le calcul du prof 
-            } else {
-              //Ici c'est si c'est pas la bonne personne (pas voté) ça met : delta/taille 
-              matrice_vote[ligne][colonne] = "Z"; 
+              break;
             }
-            text2 += " "+matrice_vote[ligne][colonne];
           }
+          if (matrice_vote[ligne][colonne]== "vide"){
+            matrice_vote[ligne][colonne] = "Z";
+          }
+          text2 += " "+matrice_vote[ligne][colonne];
         }
       } else { //Ici ce sont les étudiants ne votants pour personne
         for (let colonne in etudiants){
@@ -152,8 +131,9 @@ function clickFunc() {
       text2 += "</li>";
     }
     document.getElementById("test2").innerHTML = text2;
-  }*/ 
-
+  }
+}
+/*
 //----------------------------Récupération des noms puis nombre de vote par personne------------------------------//
 matiere = mat_check[0];
 
@@ -197,7 +177,7 @@ for(let i in log){
 /*for(let i=0;i<etudiant[0].length;i++){
   console.log(etudiant[0][i]+" "+etudiant[1][i]);
 }*/
-
+/*
 //----------------------------Création de la matrice------------------------------//
 
 let matrice = new Array(etudiant[0].length);
@@ -240,7 +220,7 @@ for(let i=0;i<matrice.length;i++){
 document.getElementById("test2").innerHTML = text2;
  
 }
-
+*/
 //------------------------------------Fonctions visuels------------------------------------//
 
 // Accordion 
