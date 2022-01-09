@@ -22,7 +22,6 @@ function init_mat_poids(){
   }
 }
 
-
 //------------------------------------Selection matières------------------------------------//
 
 //Permet de mettre à jour le tableau des matières sélectionnées et les affiche
@@ -142,103 +141,73 @@ function clickFunc() {
       //text2 += "</li>";
     }
     for (let ligne in etudiants){
-      var val = 0;
+      let val = 0;
       for (let colonne in etudiants){
         val+= matrice_vote[ligne][colonne];
+      }
+      //text2 += "<li> "+etudiants[ligne]+" "+val+"</li>";
+    }
+    //document.getElementById("test2").innerHTML = text2;
+    document.getElementById("test2").innerHTML = "OK";
+    let matrice_resultat = multiplication(matrice_vote, matrice_vote, 2, taille);
+    
+    //Ne fonctionne pas car il y a un bug dans la fonction ci-dessus
+    for (let ligne in etudiants){
+      let val2 = 0;
+      for (let colonne in etudiants){
+        val2+= matrice_resultat[ligne][colonne];
       }
       text2 += "<li> "+etudiants[ligne]+" "+val+"</li>";
     }
     document.getElementById("test2").innerHTML = text2;
   }
 }
-/*
-//----------------------------Récupération des noms puis nombre de vote par personne------------------------------//
-matiere = mat_check[0];
 
-text2 = "";
-let taille = 0; //La taille de la matrice
-let nbvotes; //nombre de vote par personnes
-let etudiant = [[],[]]; //tableau avec nom + nombre de vote 
-let cpt;
+//-------------------------------Fonction multiplication matrice--------------------------//
 
-//etudiant[0][taille]=nom
-//etudiant[1][taille]=nb de votes
-
-for(let i in log){
-  //console.log(log[i]+" "+votes[0]);
-  cpt=0;
-  for(let j in votes){
-    if(j==log[i]){
-      nbvotes=0;
-      etudiant[0][taille] = j;
-      for(let l in votes[j][matiere]){
-        nbvotes++;
-        //console.log(i+" a voté pour "+votes[i][matiere][l]+ " en "+matiere);
-      }
-      etudiant[1][taille]=nbvotes;
-      //console.log(i+" a voté pour "+etudiant[1][taille]);
-      taille++;
-      cpt=0;
-      break;
-    }else{
-      cpt=1;
-    }
-  }
-  if(cpt==1){
-    etudiant[0][taille] = log[i];
-    etudiant[1][taille] = 0;
-    taille++;
-  }
-}
-
-//affichage du tableau des étudiants avec nombre de vote
-/*for(let i=0;i<etudiant[0].length;i++){
-  console.log(etudiant[0][i]+" "+etudiant[1][i]);
-}*/
-/*
-//----------------------------Création de la matrice------------------------------//
-
-let matrice = new Array(etudiant[0].length);
-for(let i=0;i<etudiant[0].length;i++){
-  matrice[i]=new Array(etudiant[0].length);
-}
-
-for(let i=0;i<etudiant[0].length;i++){
-  if(etudiant[1][i]==0){
-  //console.log(etudiant[0][i]);
-    for(let p=0;p<matrice.length;p++){
-      matrice[i][p]=0;
-    }
-  }else{
-    for(let k=0;k<etudiant[0].length;k++){
-      for(let j in votes){
-        for(let l in votes[j][matiere]){
-          if(votes[j][matiere][l]==etudiant[0][k]){
-            matrice[i][k]=1/etudiant[1][i];           //problème ca mets trop de fois la valeur dans la matrice
-                                                      //sinon la valeur est la bonne pour chaque étudiants
-                                                      //pour l'instant j'ai mis tout le monde dans la matrice mais faudra virer
-                                                      //  ceux qui n'ont pas voté
+function multiplication(matrice1, matrice2, puissance, taille){
+  text2 =" ";
+  //Avoir deux matrices résultat pour pouvoir alterner en fonction du nbre de fois multiplié
+  //La première fois mettre dans matrice_resultat1
+  //La deuxième fois mettre dans matrcie_resultat2
+  //La troisième fois mettre dans matrcie_resultat1
+  //etc ...
+  let matrice_resultat1= [[]];
+  let matrice_resultat2= matrice1;
+  for(let compteur=0; compteur<puissance; compteur++){
+    for (let ligne=0; ligne<taille; ligne++){
+      for (let colonne=0; colonne<taille; colonne++){
+        j=0;
+        if (compteur%2==0){ //Pour les fois dites paires afin de mettre dans matrice_resultat1
+          for(let i=0; i<taille; i++){
+            if (i==0 && j==0){
+              matrice_resultat1[ligne][colonne] = matrice_resultat2[ligne][j]*matrice2[i][colonne];
+            } else {
+              matrice_resultat1[ligne][colonne] += matrice_resultat2[ligne][j]*matrice2[i][colonne];
+            }
+            j++;
+          }
+        } else if(compteur%2==1){ //Pour les fois dites impaires afin de mettre dans matrice_resultat2
+          for(let i=0; i<taille; i++){
+            if (i==0 && j==0){
+              matrice_resultat2[ligne][colonne] = matrice_resultat1[ligne][j]*matrice2[i][colonne];
+            } else {
+              matrice_resultat2[ligne][colonne] += matrice_resultat1[ligne][j]*matrice2[i][colonne];
+            }
+            j++;
           }
         }
       }
+      document.getElementById("test2").innerHTML = compteur;
+      //S'arrête la , ne fais pas plus que la première multiplication
     }
+    document.getElementById("test2").innerHTML = "OKB";
   }
+  document.getElementById("test2").innerHTML = "OKK";
+  return matrice_resultat;
 }
 
-//afiche juste la matrice avec le nom en plus devant
-for(let i=0;i<matrice.length;i++){
-  text2 += "<li>";
-  text2 +=etudiant[0][i]+" ";
-  for(let p=0;p<matrice.length;p++){
-    //console.log(matrice[i][p]);
-    text2 +=matrice[i][p]+" ";
-  }
-  text2 += "</li>";
-}
-document.getElementById("test2").innerHTML = text2;
- 
-}
-*/
+
 //------------------------------------Fonctions visuels------------------------------------//
 
 // Accordion 
