@@ -82,6 +82,7 @@ function clickFunc() {
     //Affichage de tous les participants
     for (let i = 0; i<taille; i++){
       text2 +=  "<li>" + etudiants[i] + "</li>";
+      //console.log(etudiants[i]);
     }
     //document.getElementById("test2").innerHTML = taille; //Ca fonctionne
 
@@ -140,6 +141,14 @@ function clickFunc() {
       }
       //text2 += "</li>";
     }
+    /*for(let i=0;i<matrice_vote.length;i++){
+      text2+="<li>";
+      for(let j=0;j<matrice_vote.length;j++){
+        text2 += matrice_vote[i][j]+" ";
+      }
+      text2+="</li>";
+      document.getElementById("test").innerHTML = text2;
+    }*/
     for (let ligne in etudiants){
       let val = 0;
       for (let colonne in etudiants){
