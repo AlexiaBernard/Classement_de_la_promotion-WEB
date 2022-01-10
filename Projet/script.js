@@ -157,16 +157,18 @@ function clickFunc() {
       //text2 += "<li> "+etudiants[ligne]+" "+val+"</li>";
     }
     //document.getElementById("test2").innerHTML = text2;
-    document.getElementById("test2").innerHTML = "OK";
-    let matrice_resultat = multiplication(matrice_vote, matrice_vote, 2, taille);
-    
-    //Ne fonctionne pas car il y a un bug dans la fonction ci-dessus
-    for (let ligne in etudiants){
-      let val2 = 0;
-      for (let colonne in etudiants){
-        val2+= matrice_resultat[ligne][colonne];
+    //Pour toutes les matières sauf en sport
+    //16 = des valeurs => Le maximum en puissance est 16 ?
+    //17 = que des zéros
+    //Sport : 14 max
+    let matrice_resultat = multiplication(matrice_vote, matrice_vote, 14, taille);
+    text2= " ";
+    for (let ligne=0; ligne<taille; ligne++){
+      text2+= "<li> ";
+      for (let colonne=0; colonne<taille; colonne++){
+        text2+= " "+matrice_resultat[ligne][colonne];
       }
-      text2 += "<li> "+etudiants[ligne]+" "+val+"</li>";
+      text2 +="</li>";
     }
     document.getElementById("test2").innerHTML = text2;
   }
@@ -181,10 +183,16 @@ function multiplication(matrice1, matrice2, puissance, taille){
   //La deuxième fois mettre dans matrcie_resultat2
   //La troisième fois mettre dans matrcie_resultat1
   //etc ...
-  let matrice_resultat1= [[]];
-  let matrice_resultat2= matrice1;
+  let matrice_resultat = [[]];
+  let matrice_resultat1 = [];
+  for (let ligne=0; ligne<taille; ligne++){
+    matrice_resultat1.push([]);
+    matrice_resultat1[ligne].push(new Array(taille));
+  }
+  let matrice_resultat2 = matrice1;
   for(let compteur=0; compteur<puissance; compteur++){
     for (let ligne=0; ligne<taille; ligne++){
+      text2+= "<li> ";
       for (let colonne=0; colonne<taille; colonne++){
         j=0;
         if (compteur%2==0){ //Pour les fois dites paires afin de mettre dans matrice_resultat1
@@ -196,6 +204,7 @@ function multiplication(matrice1, matrice2, puissance, taille){
             }
             j++;
           }
+          matrice_resultat = matrice_resultat1;
         } else if(compteur%2==1){ //Pour les fois dites impaires afin de mettre dans matrice_resultat2
           for(let i=0; i<taille; i++){
             if (i==0 && j==0){
@@ -205,14 +214,14 @@ function multiplication(matrice1, matrice2, puissance, taille){
             }
             j++;
           }
+          matrice_resultat = matrice_resultat1;
         }
+        text2+= " "+matrice_resultat[ligne][colonne];
       }
-      document.getElementById("test2").innerHTML = compteur;
-      //S'arrête la , ne fais pas plus que la première multiplication
+      text2 +="</li>";
     }
-    document.getElementById("test2").innerHTML = "OKB";
+    //document.getElementById("test2").innerHTML = text2;
   }
-  document.getElementById("test2").innerHTML = "OKK";
   return matrice_resultat;
 }
 
