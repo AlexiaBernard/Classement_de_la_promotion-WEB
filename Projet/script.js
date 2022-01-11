@@ -60,6 +60,7 @@ function clickFunc() {
     let taille = 0; //La taille de la matrice 
     let indice = 0; //Sert à Initialiser le tableau votants
     for(let i in votes){
+      //VERIF SI L'ETUDIANT A VOTÉ DANS LA MATIERE
       //Permet de savoir si l'étudiant est déjà dans le tableau ou non (eviter les doubles)
       if (etudiants.includes(i)==false){
         etudiants[taille] = i;
@@ -119,7 +120,7 @@ function clickFunc() {
           for (let v in votes[etudiants[ligne]][matiere]){
             if (votes[etudiants[ligne]][matiere][v]==etudiants[colonne]){
               //Ici maintenant il faut regarder dans le if le login voté si c'est celui de la matrice
-              matrice_vote[ligne][colonne] = 0.85*1/nb_vote+alpha/taille; //ici il faut mettre le calcul du prof 
+              matrice_vote[ligne][colonne] = (0.85*(1/nb_vote))+(alpha/taille); //ici il faut mettre le calcul du prof 
               break;
             }
           }
@@ -161,10 +162,11 @@ function clickFunc() {
     //16 = des valeurs => Le maximum en puissance est 16 ?
     //17 = que des zéros
     //Sport : 14 max
-    let matrice_resultat = multiplication(matrice_vote, matrice_vote, 14, taille);
+    let matrice_resultat = multiplication(matrice_vote, matrice_vote,15, taille);
     text2= " ";
     for (let ligne=0; ligne<taille; ligne++){
       text2+= "<li> ";
+      text2 += "<li> "+etudiants[ligne]+" "+"</li>";
       for (let colonne=0; colonne<taille; colonne++){
         text2+= " "+matrice_resultat[ligne][colonne];
       }
@@ -194,25 +196,22 @@ function multiplication(matrice1, matrice2, puissance, taille){
     for (let ligne=0; ligne<taille; ligne++){
       text2+= "<li> ";
       for (let colonne=0; colonne<taille; colonne++){
-        j=0;
         if (compteur%2==0){ //Pour les fois dites paires afin de mettre dans matrice_resultat1
           for(let i=0; i<taille; i++){
-            if (i==0 && j==0){
-              matrice_resultat1[ligne][colonne] = matrice_resultat2[ligne][j]*matrice2[i][colonne];
+            if (i==0){
+              matrice_resultat1[ligne][colonne] = matrice_resultat2[ligne][i]*matrice2[i][colonne];
             } else {
-              matrice_resultat1[ligne][colonne] += matrice_resultat2[ligne][j]*matrice2[i][colonne];
+              matrice_resultat1[ligne][colonne] += matrice_resultat2[ligne][i]*matrice2[i][colonne];
             }
-            j++;
           }
           matrice_resultat = matrice_resultat1;
         } else if(compteur%2==1){ //Pour les fois dites impaires afin de mettre dans matrice_resultat2
           for(let i=0; i<taille; i++){
-            if (i==0 && j==0){
-              matrice_resultat2[ligne][colonne] = matrice_resultat1[ligne][j]*matrice2[i][colonne];
+            if (i==0){
+              matrice_resultat2[ligne][colonne] = matrice_resultat1[ligne][i]*matrice2[i][colonne];
             } else {
-              matrice_resultat2[ligne][colonne] += matrice_resultat1[ligne][j]*matrice2[i][colonne];
+              matrice_resultat2[ligne][colonne] += matrice_resultat1[ligne][i]*matrice2[i][colonne];
             }
-            j++;
           }
           matrice_resultat = matrice_resultat1;
         }
