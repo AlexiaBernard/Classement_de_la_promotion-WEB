@@ -162,50 +162,52 @@ function clickFunc() {
     //16 = des valeurs => Le maximum en puissance est 16 ?
     //17 = que des zéros
     //Sport : 14 max
-    let matrice_resultat = multiplication(matrice_vote, matrice_vote,15, taille);
+    let matrice_resultat = multiplication(matrice_vote, matrice_vote,3, taille);
     text2= " ";
+    let val = 0;
     for (let ligne=0; ligne<taille; ligne++){
-      text2+= "<li> ";
-      text2 += "<li> "+etudiants[ligne]+" "+"</li>";
+      val = 0;
+      text2 += "<li> "+etudiants[ligne]+" ";
       for (let colonne=0; colonne<taille; colonne++){
-        text2+= " "+matrice_resultat[ligne][colonne];
+        val += matrice_resultat[ligne][colonne];
       }
-      text2 +="</li>";
+      text2 += val+" </li>";
     }
-    document.getElementById("test2").innerHTML = text2;
+    //document.getElementById("test2").innerHTML = text2;
   }
 }
 
 //-------------------------------Fonction multiplication matrice--------------------------//
 
 function multiplication(matrice1, matrice2, puissance, taille){
+  //JE SUIS PAS SURE MAIS JE PENSE QUE EN FAISANT COMME CA CA REVIENT A COMME JAVAIS FAIT AVANT
+  //Mais du coup j'ai comparé les valeurs et elle sont pas tout à fait les mêmes : elles sont très
+  //Mais ne sont egales à 100% du coup à voir
   text2 =" ";
-  //Avoir deux matrices résultat pour pouvoir alterner en fonction du nbre de fois multiplié
-  //La première fois mettre dans matrice_resultat1
-  //La deuxième fois mettre dans matrcie_resultat2
-  //La troisième fois mettre dans matrcie_resultat1
-  //etc ...
-  let matrice_resultat = [[]];
+  //let matrice_resultat = [[]];
   let matrice_resultat1 = [];
   for (let ligne=0; ligne<taille; ligne++){
     matrice_resultat1.push([]);
     matrice_resultat1[ligne].push(new Array(taille));
   }
-  let matrice_resultat2 = matrice1;
+  let matrice_resultat = matrice1;
+  //let matrice_resultat2 = matrice1;
   for(let compteur=0; compteur<puissance; compteur++){
     for (let ligne=0; ligne<taille; ligne++){
+      if(compteur==2)
       text2+= "<li> ";
       for (let colonne=0; colonne<taille; colonne++){
-        if (compteur%2==0){ //Pour les fois dites paires afin de mettre dans matrice_resultat1
+        //if (compteur%2==0){ //Pour les fois dites paires afin de mettre dans matrice_resultat1
           for(let i=0; i<taille; i++){
             if (i==0){
-              matrice_resultat1[ligne][colonne] = matrice_resultat2[ligne][i]*matrice2[i][colonne];
+              matrice_resultat1[ligne][colonne] = matrice_resultat[ligne][i]*matrice2[i][colonne];
             } else {
-              matrice_resultat1[ligne][colonne] += matrice_resultat2[ligne][i]*matrice2[i][colonne];
+              matrice_resultat1[ligne][colonne] += matrice_resultat[ligne][i]*matrice2[i][colonne];
             }
           }
-          matrice_resultat = matrice_resultat1;
-        } else if(compteur%2==1){ //Pour les fois dites impaires afin de mettre dans matrice_resultat2
+          if (compteur==2)
+            text2+= " "+matrice_resultat1[ligne][colonne];
+        /*} else if(compteur%2==1){ //Pour les fois dites impaires afin de mettre dans matrice_resultat2
           for(let i=0; i<taille; i++){
             if (i==0){
               matrice_resultat2[ligne][colonne] = matrice_resultat1[ligne][i]*matrice2[i][colonne];
@@ -213,13 +215,20 @@ function multiplication(matrice1, matrice2, puissance, taille){
               matrice_resultat2[ligne][colonne] += matrice_resultat1[ligne][i]*matrice2[i][colonne];
             }
           }
-          matrice_resultat = matrice_resultat1;
-        }
-        text2+= " "+matrice_resultat[ligne][colonne];
+          if(compteur==2)
+            text2+= " "+matrice_resultat2[ligne][colonne];
+        }*/
       }
+      if(compteur==2)
       text2 +="</li>";
     }
-    //document.getElementById("test2").innerHTML = text2;
+    /*if (compteur%2==0){
+      matrice_resultat = matrice_resultat1;
+    }else {
+      matrice_resultat = matrice_resultat2;
+    }*/
+    matrice_resultat = matrice_resultat1;
+    document.getElementById("test2").innerHTML = text2;
   }
   return matrice_resultat;
 }
