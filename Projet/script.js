@@ -170,7 +170,7 @@ function clickFunc() {
     //16 = des valeurs => Le maximum en puissance est 16 ?
     //17 = que des zéros
     //Sport : 14 max
-    let matrice_resultat = multiplication(matrice_vote, matrice_vote,2, taille);
+    let matrice_resultat = multiplication(matrice_vote, matrice_vote,20, taille);
     text2= " ";
     let val = 0;
     for (let ligne=0; ligne<taille; ligne++){
@@ -196,27 +196,31 @@ function multiplication(matrice1, matrice2, puissance, taille){
     matrice_resultat1.push([]);
     matrice_resultat1[ligne].push(new Array(taille));
   }
-  let matrice_resultat = matrice1;
   for(let compteur=0; compteur<puissance; compteur++){
     for (let ligne=0; ligne<taille; ligne++){
       for (let colonne=0; colonne<taille; colonne++){
         for(let i=0; i<taille; i++){
           if (i==0){
-            matrice_resultat1[ligne][colonne] = matrice_resultat[ligne][i]*matrice2[i][colonne];
+            matrice_resultat1[ligne][colonne] = matrice1[ligne][i]*matrice2[i][colonne];
           } else {
-            matrice_resultat1[ligne][colonne] += matrice_resultat[ligne][i]*matrice2[i][colonne];
+            matrice_resultat1[ligne][colonne] += matrice1[ligne][i]*matrice2[i][colonne];
           }
-          if (ligne==0 && colonne==0){
-            console.log(matrice_resultat1[ligne][colonne]);
-          }
-          
+          console.log("compteur==0");
         }
       }
     }
-    matrice_resultat = matrice_resultat1;
+    //Ces deux boucles
+    for(let i=0; i<taille; i++){
+      for(let j=0; j<taille; j++){
+        matrice1[i][j] = matrice_resultat1[i][j];
+      }
+    }
+   
   }
-  return matrice_resultat;
+  //return matrice_resultat1; //ça ça fonctionne
+  return matrice1; //Avec ça je suis pas sûre ma page web a plantée tellement c'était long
 }
+  
 
 
 //------------------------------------Fonctions visuels------------------------------------//
