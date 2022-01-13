@@ -170,7 +170,7 @@ function clickFunc() {
     //16 = des valeurs => Le maximum en puissance est 16 ?
     //17 = que des zéros
     //Sport : 14 max
-    let matrice_resultat = multiplication(matrice_vote, matrice_vote,20, taille);
+    let matrice_resultat = multiplication(matrice_vote, matrice_vote,5, taille);
     text2= " ";
     let val = 0;
     for (let ligne=0; ligne<taille; ligne++){
