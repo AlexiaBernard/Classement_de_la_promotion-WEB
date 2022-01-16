@@ -223,15 +223,13 @@ function multiplication(matrice1, matrice2, puissance, taille){
     } else if (puissance%2==1){//impair
       matrice_resultat1=multiplication(matrice1,matrice2,(puissance-1)/2,taille);
 
-      matrice_resultat3=multiplication(matrice1,matrice2,1,taille);
-
       for (let ligne=0; ligne<taille; ligne++){
         for (let colonne=0; colonne<taille; colonne++){
           for(let i=0; i<taille; i++){
             if (i==0){
-              matrice_resultat2[ligne][colonne] = matrice_resultat1[ligne][i]*matrice_resultat1[i][colonne]*matrice_resultat3[i][colonne];
+              matrice_resultat2[ligne][colonne] = matrice_resultat1[ligne][i]*matrice1[i][colonne];
             } else {
-              matrice_resultat2[ligne][colonne] += matrice_resultat1[ligne][i]*matrice_resultat1[i][colonne]*matrice_resultat3[i][colonne];
+              matrice_resultat2[ligne][colonne] += matrice_resultat1[ligne][i]*matrice1[i][colonne];
             }
           }
         }
@@ -240,19 +238,8 @@ function multiplication(matrice1, matrice2, puissance, taille){
     console.log("puissance = "+puissance);
     return matrice_resultat2;
   } else {
-    for (let ligne=0; ligne<taille; ligne++){
-      for (let colonne=0; colonne<taille; colonne++){
-        for(let i=0; i<taille; i++){
-          if (i==0){
-            matrice_resultat1[ligne][colonne] = matrice1[ligne][i]*matrice2[i][colonne];
-          } else {
-            matrice_resultat1[ligne][colonne] += matrice1[ligne][i]*matrice2[i][colonne];
-          }
-        }
-      }
-    }
     console.log("puissance = "+puissance);
-    return matrice_resultat1;
+    return matrice1;
   }
 }
 
