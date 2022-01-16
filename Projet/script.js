@@ -14,8 +14,6 @@ log=getlog(logins);
 //------------------------------------Fonctions votes--------------------------------------//
 let matrice_poids = [];
 
-//init_mat_poids();
-
 function init_mat_poids(){
   for (let i=0; i<taille ;i++){
     matrice_poids[i] = 1;
@@ -99,7 +97,6 @@ function clickFunc() {
   //----------------------------Récupération des votes------------------------------//
     for(let ligne in etudiants){ //Parcourt les étudiants
       //ligne est le numéro de l'etudiant et etudiant[ligne] son log
-      //text2 += "<li>" + etudiants[ligne];
       //Permet de créer une ligne vide
       matrice_vote.push([]);
       //Remplis la ligne vide créée juste au dessus
@@ -150,14 +147,6 @@ function clickFunc() {
       }
       //text2 += "</li>";
     }
-    /*for(let i=0;i<matrice_vote.length;i++){
-      text2+="<li>";
-      for(let j=0;j<matrice_vote.length;j++){
-        text2 += matrice_vote[i][j]+" ";
-      }
-      text2+="</li>";
-      document.getElementById("test").innerHTML = text2;
-    }*/
     for (let ligne in etudiants){
       let val = 0;
       for (let colonne in etudiants){
@@ -166,22 +155,29 @@ function clickFunc() {
       //text2 += "<li> "+etudiants[ligne]+" "+val+"</li>";
     }
     //document.getElementById("test2").innerHTML = text2;
+
     //Pour toutes les matières sauf en sport
     //16 = des valeurs => Le maximum en puissance est 16 ?
     //17 = que des zéros
     //Sport : 14 max
-    let matrice_resultat = multiplication(matrice_vote, matrice_vote,5, taille);
-    text2= " ";
+    let matrice_resultat = multiplication(matrice_vote, matrice_vote,100, taille);
+
+    var tab=[[],[]];
+
     let val = 0;
     for (let ligne=0; ligne<taille; ligne++){
       val = 0;
-      text2 += "<li> "+etudiants[ligne]+" ";
       for (let colonne=0; colonne<taille; colonne++){
         val += matrice_resultat[ligne][colonne];
-        //text2 += matrice_resultat[ligne][colonne]+" ";
       }
-      text2 += val+" </li>";
-      
+      tab[0][ligne]=etudiants[ligne];
+      tab[1][ligne]=val;
+    }
+
+    text2= " ";
+    tab[1].sort();
+    for(let i=0;i<tab[0].length;i++){
+      text2 += "<li> "+tab[0][i]+" "+tab[1][i]+"</li>";
     }
     document.getElementById("test2").innerHTML = text2;
   }
@@ -196,7 +192,54 @@ function multiplication(matrice1, matrice2, puissance, taille){
     matrice_resultat1.push([]);
     matrice_resultat1[ligne].push(new Array(taille));
   }
-  for(let compteur=0; compteur<puissance; compteur++){
+
+  let matrice_resultat2 = [];
+  for (let ligne=0; ligne<taille; ligne++){
+    matrice_resultat2.push([]);
+    matrice_resultat2[ligne].push(new Array(taille));
+  }
+
+  let matrice_resultat3 = [];
+  for (let ligne=0; ligne<taille; ligne++){
+    matrice_resultat3.push([]);
+    matrice_resultat3[ligne].push(new Array(taille));
+  }
+
+  if(puissance!=1){
+    if(puissance%2==0){//pair
+      matrice_resultat1=multiplication(matrice1,matrice2,puissance/2,taille);
+
+      for (let ligne=0; ligne<taille; ligne++){
+        for (let colonne=0; colonne<taille; colonne++){
+          for(let i=0; i<taille; i++){
+            if (i==0){
+              matrice_resultat2[ligne][colonne] = matrice_resultat1[ligne][i]*matrice_resultat1[i][colonne];
+            } else {
+              matrice_resultat2[ligne][colonne] += matrice_resultat1[ligne][i]*matrice_resultat1[i][colonne];
+            }
+          }
+        }
+      }
+    } else if (puissance%2==1){//impair
+      matrice_resultat1=multiplication(matrice1,matrice2,(puissance-1)/2,taille);
+
+      matrice_resultat3=multiplication(matrice1,matrice2,1,taille);
+
+      for (let ligne=0; ligne<taille; ligne++){
+        for (let colonne=0; colonne<taille; colonne++){
+          for(let i=0; i<taille; i++){
+            if (i==0){
+              matrice_resultat2[ligne][colonne] = matrice_resultat1[ligne][i]*matrice_resultat1[i][colonne]*matrice_resultat3[i][colonne];
+            } else {
+              matrice_resultat2[ligne][colonne] += matrice_resultat1[ligne][i]*matrice_resultat1[i][colonne]*matrice_resultat3[i][colonne];
+            }
+          }
+        }
+      }
+    }
+    console.log("puissance = "+puissance);
+    return matrice_resultat2;
+  } else {
     for (let ligne=0; ligne<taille; ligne++){
       for (let colonne=0; colonne<taille; colonne++){
         for(let i=0; i<taille; i++){
@@ -205,23 +248,13 @@ function multiplication(matrice1, matrice2, puissance, taille){
           } else {
             matrice_resultat1[ligne][colonne] += matrice1[ligne][i]*matrice2[i][colonne];
           }
-          console.log("compteur==0");
         }
       }
     }
-    //Ces deux boucles
-    for(let i=0; i<taille; i++){
-      for(let j=0; j<taille; j++){
-        matrice1[i][j] = matrice_resultat1[i][j];
-      }
-    }
-   
+    console.log("puissance = "+puissance);
+    return matrice_resultat1;
   }
-  //return matrice_resultat1; //ça ça fonctionne
-  return matrice1; //Avec ça je suis pas sûre ma page web a plantée tellement c'était long
 }
-  
-
 
 //------------------------------------Fonctions visuels------------------------------------//
 

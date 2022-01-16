@@ -39,3 +39,39 @@ Et du coup je te laisserai voir mais je pense que la fonction ci-dessus fais le 
 
 
  */
+
+ function multiplication(matrice1, matrice2, puissance, taille){
+  text2 =" ";
+  let matrice_resultat1 = [];
+  for (let ligne=0; ligne<taille; ligne++){
+    matrice_resultat1.push([]);
+    matrice_resultat1[ligne].push(new Array(taille));
+  }
+  if(puissance!=1){
+    //multiplication(matrice1,matrice2,puissance/2,taille);
+  }
+  for(let compteur=0; compteur<puissance; compteur++){
+    for (let ligne=0; ligne<taille; ligne++){
+      for (let colonne=0; colonne<taille; colonne++){
+        for(let i=0; i<taille; i++){
+          if (i==0){
+            matrice_resultat1[ligne][colonne] = matrice1[ligne][i]*matrice2[i][colonne];
+          } else {
+            matrice_resultat1[ligne][colonne] += matrice1[ligne][i]*matrice2[i][colonne];
+          }
+          console.log("compteur==0");
+        }
+      }
+    }
+    //Ces deux boucles
+    /*for(let i=0; i<taille; i++){
+      for(let j=0; j<taille; j++){
+        matrice1[i][j] = matrice_resultat1[i][j];
+      }
+    }*/
+   
+  }
+  return matrice_resultat1; //ça ça fonctionne
+  //return matrice1; //Avec ça je suis pas sûre ma page web a plantée tellement c'était long
+}
+  
