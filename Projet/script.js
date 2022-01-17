@@ -81,8 +81,6 @@ function clickFunc() {
       //console.log(nom[0][j]+ " "+nom[1][j]);
     }
 
-    var tabfinal=[[],[]];
-
     //-----------------------Récupération des etudiants-------------------------//
     for (let j = 0; j<mat_check.length; j++){
       var matrice_vote = []; 
@@ -118,7 +116,6 @@ function clickFunc() {
     }
 
     for (let j = 0; j<mat_check.length; j++){
-      matiere = mat_check[j];
       var nb_vote = 0;
       var alpha = 0.15;
       let votant = true;
@@ -190,32 +187,25 @@ function clickFunc() {
         for(let colonne=0; colonne<taille; colonne++){
           tab[0][colonne] = etudiants[colonne]; //le login de l'etudiant
           tab[1][colonne] = matrice_resultat[0][colonne]*nom[1][j]; //son score
-          tabfinal[0][colonne] = etudiants[colonne];
-          tabfinal[1][colonne]=0;
         }
       } else {
         for (let colonne=0; colonne<taille; colonne++){
           for (let l=0; l<taille; l++){
             if (tab[0][l]==tab[0][colonne]){
-              tab[1][colonne] += matrice_resultat[0][colonne];
+              tab[1][colonne] += matrice_resultat[0][colonne]*nom[1][j];
               break;
             }
           }
         }
       }
-
-      for(let i=0;i<tabfinal[0].length;i++){
-        tabfinal[1][i]+=tab[1][i];
-      }
-
     }
     
     text2= " ";
-    tabfinal2=[[],[]];
-    //tabfinal2=tabfinal.sort(compareSecondColumn);
+    var tabfinal=[[],[]];
+    //tabfinal=tab.sort(compareSecondColumn);
 
-    for(let i=0;i<tabfinal[0].length;i++){
-      text2 += "<li> "+tabfinal[0][i]+" "+tabfinal[1][i]+"</li>";
+    for(let i=0;i<tab[0].length;i++){
+      text2 += "<li> "+tab[0][i]+" "+tab[1][i]+"</li>";
     }
     document.getElementById("test2").innerHTML = text2;
   }
