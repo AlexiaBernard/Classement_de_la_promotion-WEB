@@ -8,17 +8,8 @@ function getlog(src){
   dest.sort();
   return dest;
 }
-let log=[];
+var log=[];
 log=getlog(logins);
-
-//------------------------------------Fonctions votes--------------------------------------//
-let matrice_poids = [];
-
-function init_mat_poids(){
-  for (let i=0; i<taille ;i++){
-    matrice_poids[i] = 1;
-  }
-}
 
 //------------------------------------Selection matières------------------------------------//
 
@@ -57,39 +48,37 @@ function clickFunc() {
     matiere = mat_check[j]; //Attention pour le moment il faut selectionner qu'une seule matiere
     text2 = "";
     let compteur = 0;
-    let taille = 0; //La taille de la matrice 
+    var taille = 0; //La taille de la matrice 
     let indice = 0; //Sert à Initialiser le tableau votants
     for(let i in votes){
-      compteur = 0;
-      for(let l in votes[i][matiere]){
-        compteur++;
+      if(log.includes(i)==true){
+        compteur = 0;
+        for(let l in votes[i][matiere]){
+          compteur++;
+          //Permet de savoir si l'étudiant est déjà dans le tableau ou non (eviter les doubles)
+          if (etudiants.includes(votes[i][matiere][l])==false && votes[i][matiere][l]!=="" && log.includes(votes[i][matiere][l])==true){
+            etudiants[taille] = votes[i][matiere][l];
+            taille++;
+          }
+        }
         //Permet de savoir si l'étudiant est déjà dans le tableau ou non (eviter les doubles)
-        if (etudiants.includes(votes[i][matiere][l])==false && votes[i][matiere][l]!==""){
-          etudiants[taille] = votes[i][matiere][l];
-          taille++;
+        if (compteur>0){
+          if (etudiants.includes(i)==false ){
+            etudiants[taille] = i;
+            taille ++;
+          }
+          votants[indice] = i;
+          indice ++;
         }
-      }
-      //Permet de savoir si l'étudiant est déjà dans le tableau ou non (eviter les doubles)
-      if (compteur>0){
-        if (etudiants.includes(i)==false ){
-          etudiants[taille] = i;
-          taille ++;
-        }
-        votants[indice] = i;
-        indice ++;
       }
     }
     //définition de la taille de la matrice
     taille = etudiants.length;
+  }
 
-    //Affichage de tous les participants
-    for (let i = 0; i<taille; i++){
-      text2 +=  "<li>" + etudiants[i] + "</li>";
-      //console.log(votants[i]);
-    }
+    for (let j = 0; j<mat_check.length; j++){
 
     var nb_vote = 0;
-    var matiere;
     var alpha = 0.15;
     let votant = true;
     text2 = "";
@@ -130,7 +119,6 @@ function clickFunc() {
           if (matrice_vote[ligne][colonne]== "vide"){
             matrice_vote[ligne][colonne] = alpha/taille;
           }
-          //text2 += " "+matrice_vote[ligne][colonne];
         }
       } else {
         //Ici ce sont les étudiants ne votants pour personne
@@ -142,10 +130,8 @@ function clickFunc() {
             matrice_vote[ligne][colonne] = valeur; //il vote pour tout le monde
             //taille-1 car vote pour tout le monde sauf lui
           }
-          //text2 += " "+matrice_vote[ligne][colonne];
         }
       }
-      //text2 += "</li>";
     }
     for (let ligne in etudiants){
       let val = 0;
@@ -158,20 +144,21 @@ function clickFunc() {
 
     let matrice_resultat = multiplication(matrice_vote, matrice_vote,100, taille);
 
-    var tab=[[],[]];
-
-    /*let val = 0;
-    for (let ligne=0; ligne<taille; ligne++){
-      val = 0;
-      for (let colonne=0; colonne<taille; colonne++){
-        //val += matrice_resultat[ligne][colonne];
+    if(j==0){
+      var tab=[[],[]];
+      for(let colonne=0; colonne<taille; colonne++){
+        tab[0][colonne] = etudiants[colonne]; //le login de l'etudiant
+        tab[1][colonne] = matrice_resultat[0][colonne]; //son score
       }
-      tab[0][ligne]=etudiants[ligne];
-      tab[1][ligne]=val;
-    }*/
-    for(let colonne=0; colonne<taille; colonne++){
-      tab[0][colonne] = etudiants[colonne]; //le login de l'etudiant
-      tab[1][colonne] = matrice_resultat[0][colonne]; //son score 
+    } else {
+      for (let colonne=0; colonne<taille; colonne++){
+        for (let l=0; l<taille; l++){
+          if (tab[0][l]==tab[0][colonne]){
+            tab[1][colonne] += matrice_resultat[0][colonne];
+            break;
+          }
+        }
+      }
     }
 
     text2= " ";
