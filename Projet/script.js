@@ -156,26 +156,26 @@ function clickFunc() {
     }
     //document.getElementById("test2").innerHTML = text2;
 
-    //Pour toutes les matières sauf en sport
-    //16 = des valeurs => Le maximum en puissance est 16 ?
-    //17 = que des zéros
-    //Sport : 14 max
     let matrice_resultat = multiplication(matrice_vote, matrice_vote,100, taille);
 
     var tab=[[],[]];
 
-    let val = 0;
+    /*let val = 0;
     for (let ligne=0; ligne<taille; ligne++){
       val = 0;
       for (let colonne=0; colonne<taille; colonne++){
-        val += matrice_resultat[ligne][colonne];
+        //val += matrice_resultat[ligne][colonne];
       }
       tab[0][ligne]=etudiants[ligne];
       tab[1][ligne]=val;
+    }*/
+    for(let colonne=0; colonne<taille; colonne++){
+      tab[0][colonne] = etudiants[colonne]; //le login de l'etudiant
+      tab[1][colonne] = matrice_resultat[0][colonne]; //son score 
     }
 
     text2= " ";
-    tab[1].sort();
+    tab[1].sort(); //tri par ordre croissant
     for(let i=0;i<tab[0].length;i++){
       text2 += "<li> "+tab[0][i]+" "+tab[1][i]+"</li>";
     }
