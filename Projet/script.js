@@ -199,16 +199,30 @@ function clickFunc() {
         }
       }
     }
+    tab[1].sort(); //permet de trier le tableau
     
     text2= " ";
+    /*
     var tabfinal=[[],[]];
     //tabfinal=tab.sort(compareSecondColumn);
 
     for(let i=0;i<tab[0].length;i++){
       text2 += "<li> "+tab[0][i]+" "+tab[1][i]+"</li>";
     }
-    document.getElementById("test2").innerHTML = text2;
+    document.getElementById("test2").innerHTML = text2;*/
   }
+  let classement = 1; //classement
+  let compteur = 1; //permet de savoir s'il y a des execos combien
+  for(let i=(tab[0].length-1);i>=0;i--){
+    text2 += "<li> n°"+classement+" "+tab[0][i]+" "+tab[1][i]+"</li>";
+    if (tab[1][i]!=tab[1][i-1]){
+      classement += compteur;
+      compteur = 1;
+    } else {
+      compteur++;
+    }
+  }
+  document.getElementById("test2").innerHTML = text2;
 }
 
 function compareSecondColumn(a, b) {
