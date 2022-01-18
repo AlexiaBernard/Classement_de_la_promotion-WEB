@@ -25,21 +25,21 @@ function clickFunc() {
 
   let text = "";
   let text2 = "";
+  text = "Vous avez choisi : ";
   for (i=0; i<matieres.length; i++){
     var mati = document.getElementById(matieres[i]);
     if (mati.checked == true){
       if (mat_check.includes(mati) == false){
         mat_check.push(matieres[i]);
       }
-      text += "<li>" + matieres[i] + "</li>";
+      text += matieres[i]+ ", ";
     } else {
       if (mat_check.includes(mati) == true){
         mat_check.splice(matieres.lastIndexOf(mati),1);
       }
     }
-    document.getElementById("test").innerHTML = text;
-    //document.getElementById("test2").innerHTML = logins[log[0]]; //affiche le nom entier
   }
+  document.getElementById("test").innerHTML = text;
 
   if(mat_check.length==0){
     text2 = "";
@@ -53,7 +53,6 @@ function clickFunc() {
       matiere = mat_check[j];
       nbvotes=0;
       for(let i in log){
-        //console.log(log[i]+" "+votes[0]);
         for(let j in votes){
           if(j==log[i]){
             for(let l in votes[j][matiere]){
@@ -176,9 +175,7 @@ function clickFunc() {
         for (let colonne in etudiants){
           val+= matrice_vote[ligne][colonne];
         }
-        //text2 += "<li> "+etudiants[ligne]+" "+val+"</li>";
       }
-      //document.getElementById("test2").innerHTML = text2;
 
       let matrice_resultat = multiplication(matrice_vote, matrice_vote,100, taille);
 
@@ -202,14 +199,6 @@ function clickFunc() {
     tab[1].sort(); //permet de trier le tableau
     
     text2= " ";
-    /*
-    var tabfinal=[[],[]];
-    //tabfinal=tab.sort(compareSecondColumn);
-
-    for(let i=0;i<tab[0].length;i++){
-      text2 += "<li> "+tab[0][i]+" "+tab[1][i]+"</li>";
-    }
-    document.getElementById("test2").innerHTML = text2;*/
   }
   let classement = 1; //classement
   let compteur = 1; //permet de savoir s'il y a des execos combien
@@ -295,7 +284,6 @@ function multiplication(matrice1, matrice2, puissance, taille){
 
 //------------------------------------Fonctions visuels------------------------------------//
 
-// Accordion 
 function myAccFunc() {
   var x = document.getElementById("demoAcc");
   if (x.className.indexOf("w3-show") == -1) {
@@ -305,9 +293,7 @@ function myAccFunc() {
   }
 }
 
-// Click on the "Matières" link on page load to open the accordion for demo purposes
 document.getElementById("myBtn").click();
-
 
 // Open sidebar
 function w3_open() {
