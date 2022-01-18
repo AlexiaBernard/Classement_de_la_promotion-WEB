@@ -17,6 +17,7 @@ log=getlog(logins);
 function clickFunc() { 
   let etudiants = [];
   let votants = [];
+  let matiere;
   //Tableau de toutes les matières disponibles
   let matieres = ['ACDA', 'ANG', 'APL', 'ART', 'ASR', 'EC', 'EGOD', 'MAT', 'SGBD', 'SPORT'];
   
@@ -26,13 +27,17 @@ function clickFunc() {
   let text = "";
   let text2 = "";
   text = "Vous avez choisi : ";
-  for (i=0; i<matieres.length; i++){
+  for (let i=0; i<matieres.length; i++){
     var mati = document.getElementById(matieres[i]);
     if (mati.checked == true){
       if (mat_check.includes(mati) == false){
         mat_check.push(matieres[i]);
       }
-      text += matieres[i]+ ", ";
+      if (i==0){
+        text += matieres[i];
+      } else {
+        text += ", "+matieres[i] ;
+      }
     } else {
       if (mat_check.includes(mati) == true){
         mat_check.splice(matieres.lastIndexOf(mati),1);
@@ -184,12 +189,15 @@ function clickFunc() {
         for(let colonne=0; colonne<taille; colonne++){
           tab[0][colonne] = etudiants[colonne]; //le login de l'etudiant
           tab[1][colonne] = matrice_resultat[0][colonne]*nom[1][j]; //son score
+          //tab[1][colonne] = matrice_resultat[0][colonne]; //son score
         }
       } else {
         for (let colonne=0; colonne<taille; colonne++){
           for (let l=0; l<taille; l++){
             if (tab[0][l]==tab[0][colonne]){
-              tab[1][colonne] += matrice_resultat[0][colonne]*nom[1][j];
+              //tab[1][colonne] += matrice_resultat[0][colonne]*nom[1][j];
+              //tab[1][colonne] += matrice_resultat[0][colonne]; //son score
+              //tab[1][colonne] += nom[1][j];
               break;
             }
           }
@@ -202,7 +210,7 @@ function clickFunc() {
   }
   let classement = 1; //classement
   let compteur = 1; //permet de savoir s'il y a des execos combien
-  for(let i=(tab[0].length-1);i>=0;i--){
+  for(let i=(tab[0].length-1);i>=0;i--){ //Affichage
     text2 += "<li> n°"+classement+" "+tab[0][i]+" "+tab[1][i]+"</li>";
     if (tab[1][i]!=tab[1][i-1]){
       classement += compteur;
@@ -214,14 +222,6 @@ function clickFunc() {
   document.getElementById("test2").innerHTML = text2;
 }
 
-function compareSecondColumn(a, b) {
-  if (a[1] === b[1]) {
-    return 0;
-  }
-  else {
-    return (a[1] < b[1]) ? -1 : 1;
-  }
-}
 //-------------------------------Fonction multiplication matrice--------------------------//
 
 function multiplication(matrice1, matrice2, puissance, taille){
