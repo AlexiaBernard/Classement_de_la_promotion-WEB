@@ -13,22 +13,25 @@ log=getlog(logins);
 
 //------------------------------------Selection matières------------------------------------//
 
-//Permet de mettre à jour le tableau des matières sélectionnées et les affiche
+//Fonction qui permet de mettre à jour la page lors d'un click
 function clickFunc() { 
+  //Tableau représentant l'ensemble des étudiants concernés par la ou les matières(s) sélectionnée(s)
   let etudiants = [];
+  //Tableau représentant l'ensemble des étudiants ayant votés dans la ou les matières(s) sélectionnée(s)
   let votants = [];
   let matiere;
-  //Tableau de toutes les matières disponibles
+  //Tableau représentant toutes les matières disponibles
   let matieres = ['ACDA', 'ANG', 'APL', 'ART', 'ASR', 'EC', 'EGOD', 'MAT', 'SGBD', 'SPORT'];
   
-  //Tableau des matières sélectionnées
+  //Tableau représentant la ou les matière(s) sélectionnée(s)
   let mat_check = [];
 
-  let text = "";
+  //Texte qui va être affiché dans id "premier"
+  let text = "Vous avez choisi : ";
+  //Texte qui va être affiché dans id "deuxieme"
   let text2 = "";
-  text = "Vous avez choisi : ";
   for (let i=0; i<matieres.length; i++){
-    var mati = document.getElementById(matieres[i]);
+    let mati = document.getElementById(matieres[i]);
     if (mati.checked == true){
       if (mat_check.includes(mati) == false){
         mat_check.push(matieres[i]);
@@ -44,25 +47,25 @@ function clickFunc() {
       }
     }
   }
-  document.getElementById("test").innerHTML = text;
+  document.getElementById("premier").innerHTML = text;
 
   if(mat_check.length==0){
-    text2 = "";
-    document.getElementById("test").innerHTML = text2;
-    document.getElementById("test2").innerHTML = text2;
+    document.getElementById("premier").innerHTML = text2;
+    document.getElementById("deuxieme").innerHTML = text2;
   }else{
 
-    let nbvotes; //nombre de vote par personnes
+    //-----------------------Récupération du nombre de vote par matière-------------------------//
+    let nbvotes; //nombre de vote par personne
     let nom=[[],[]]; //nom des matières + nombre de votes
     for (let j = 0; j<mat_check.length; j++){
       matiere = mat_check[j];
       nbvotes=0;
       for(let i in log){
-        for(let j in votes){
-          if(j==log[i]){
-            for(let l in votes[j][matiere]){
+        for(let v in votes){
+          if(v==log[i]){
+            for(let l in votes[v][matiere]){
               nbvotes++;
-              //console.log(j+" a voté pour "+votes[j][matiere][l]+ " en "+matiere);
+              //console.log(v+" a voté pour "+votes[v][matiere][l]+ " en "+matiere);
             }
             break;
           }
@@ -85,14 +88,14 @@ function clickFunc() {
       //console.log(nom[0][j]+ " "+nom[1][j]);
     }
 
-    //-----------------------Récupération des etudiants-------------------------//
+    //-----------------------Récupération des étudiants-------------------------//
     for (let j = 0; j<mat_check.length; j++){
+      var tabfinal=[[],[]];
       var matrice_vote = []; 
-      matiere = mat_check[j]; //Attention pour le moment il faut selectionner qu'une seule matiere
-      text2 = "";
-      let compteur = 0;
+      matiere = mat_check[j];
+      let compteur = 0; //Compteur pour le nombre de vote
       var taille = 0; //La taille de la matrice 
-      let indice = 0; //Sert à Initialiser le tableau votants
+      let indice = 0; //Sert à initialiser le tableau votants
       for(let i in votes){
         if(log.includes(i)==true){
           compteur = 0;
@@ -119,11 +122,13 @@ function clickFunc() {
       taille = etudiants.length;
     }
 
+    etudiants.sort();
+    votants.sort();
+
     for (let j = 0; j<mat_check.length; j++){
       var nb_vote = 0;
       var alpha = 0.15;
       let votant = true;
-      text2 = "";
       let valeur = 0;
     //----------------------------Récupération des votes------------------------------//
       for(let ligne in etudiants){ //Parcourt les étudiants
@@ -189,29 +194,30 @@ function clickFunc() {
         for(let colonne=0; colonne<taille; colonne++){
           tab[0][colonne] = etudiants[colonne]; //le login de l'etudiant
           tab[1][colonne] = matrice_resultat[0][colonne]*nom[1][j]; //son score
-          //tab[1][colonne] = matrice_resultat[0][colonne]; //son score
         }
       } else {
         for (let colonne=0; colonne<taille; colonne++){
           for (let l=0; l<taille; l++){
             if (tab[0][l]==tab[0][colonne]){
-              //tab[1][colonne] += matrice_resultat[0][colonne]*nom[1][j];
-              //tab[1][colonne] += matrice_resultat[0][colonne]; //son score
-              //tab[1][colonne] += nom[1][j];
+              tab[1][colonne] += matrice_resultat[0][colonne]*nom[1][j];
               break;
             }
           }
         }
       }
     }
-    tab[1].sort(); //permet de trier le tableau
-    
-    text2= " ";
   }
+  tabfinal=tri(tab);
+
+ /* for(let i=0;i<tabfinal[0].length;i++){
+    text2 += "<li> "+tabfinal[0][i]+" "+tabfinal[1][i]+"</li>";
+    
+  }*/
+  text2 = "";
   let classement = 1; //classement
   let compteur = 1; //permet de savoir s'il y a des execos combien
-  for(let i=(tab[0].length-1);i>=0;i--){ //Affichage
-    text2 += "<li> n°"+classement+" "+tab[0][i]+" "+tab[1][i]+"</li>";
+  for(let i=0;i<tabfinal[0].length;i++){ //Affichage
+    text2 += "<li> n°"+classement+" "+tabfinal[0][i]+" "+tabfinal[1][i]+"</li>";
     if (tab[1][i]!=tab[1][i-1]){
       classement += compteur;
       compteur = 1;
@@ -219,7 +225,28 @@ function clickFunc() {
       compteur++;
     }
   }
-  document.getElementById("test2").innerHTML = text2;
+  document.getElementById("deuxieme").innerHTML = text2;
+}
+
+//-------------------------------Fonction tri-------------------------------------//
+
+function tri(tab){
+  let log = tab[0];
+  let votes = tab[1];
+  let c;
+  for(let i=0; i<((votes.length)-1); i++){
+    for(let j=i+1; j<votes.length; j++){
+      if ( votes[i] < votes[j] ) {
+          c = votes[i];
+          votes[i] = votes[j];
+          votes[j] = c;
+          c = log[i];
+          log[i] = log[j];
+          log[j] = c;
+      }
+    }
+  }
+  return tab
 }
 
 //-------------------------------Fonction multiplication matrice--------------------------//
