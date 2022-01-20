@@ -46,14 +46,16 @@ function clickFunc() {
   let text = "Vous avez choisi : ";
   //Texte qui va être affiché dans id "table"
   let text2 = "";
+  let cpt = true;
   for (let i=0; i<matieres.length; i++){
     let mati = document.getElementById(matieres[i]);
     if (mati.checked == true){
       if (mat_check.includes(mati) == false){
         mat_check.push(matieres[i]);
       }
-      if (i==0){
+      if (cpt==true){
         text += matieres[i];
+        cpt = false;
       } else {
         text += ", "+matieres[i] ;
       }
