@@ -237,12 +237,27 @@ function clickFunc() {
 
   let classement = 1; //classement
   let compteur = 1; //permet de savoir s'il y a des execos combien
+  let top=0;
   const keys = Object.keys(logins);
   for(let i=0;i<tabfinal[0].length;i++){ //Affichage
     for (let x=0;x<log2[0].length;x++){
       if(log2[0][x]==tabfinal[0][i]){
-        text2+="<tr><th>"+classement+"</th><th>"+log2[1][x]+"</th><th>"+tabfinal[1][i]+"</th></tr>";
-        break;
+        if(top==0){
+          text2+="<tr class=w3-pale-yellow><th>"+classement+"</th><th>"+log2[1][x]+"</th><th>"+tabfinal[1][i]+"</th></tr>";
+          top++;
+          break;
+        }else if(top==1){
+          text2+="<tr class=w3-pale-blue><th>"+classement+"</th><th>"+log2[1][x]+"</th><th>"+tabfinal[1][i]+"</th></tr>";
+          top++;
+          break;
+        }else if(top==2){
+          text2+="<tr class=w3-pale-green><th>"+classement+"</th><th>"+log2[1][x]+"</th><th>"+tabfinal[1][i]+"</th></tr>";
+          top++;          
+          break;
+        }else{
+          text2+="<tr><th>"+classement+"</th><th>"+log2[1][x]+"</th><th>"+tabfinal[1][i]+"</th></tr>";
+          break;
+        }
       }
     }
     if (tab[1][i]!=tab[1][i-1]){
